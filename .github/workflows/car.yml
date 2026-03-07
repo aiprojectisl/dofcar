@@ -39,4 +39,5 @@ jobs:
           WEB_USERNAME:  ${{ secrets.WEB_USERNAME }}
           WEB_PASSWORD:  ${{ secrets.WEB_PASSWORD }}
           WEB_ENTITY:    ${{ secrets.WEB_ENTITY }}
+          VERCEL_URL:    ${{ secrets.VERCEL_URL }}
         run: node test_fetch_all.js
