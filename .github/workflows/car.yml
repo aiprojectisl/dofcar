@@ -36,5 +36,7 @@ jobs:
           SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
           BOT_SECRET:    ${{ secrets.BOT_SECRET }}
-          CREDS_SECRET:  ${{ secrets.CREDS_SECRET }}
+          WEB_USERNAME:  ${{ secrets.WEB_USERNAME }}
+          WEB_PASSWORD:  ${{ secrets.WEB_PASSWORD }}
+          WEB_ENTITY:    ${{ secrets.WEB_ENTITY }}
         run: node test_fetch_all.js
