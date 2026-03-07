@@ -1,0 +1,40 @@
+name: DOF Scraper
+
+on:
+  schedule:
+    - cron: '0 2,4,6,8,10 * * 1-5'      # 09,11,13,15,17 WIB weekday
+    - cron: '0 11,13 * * 1-5'            # 18,20 WIB weekday
+    - cron: '0 22 * * 1-5'              # 05 WIB weekday
+    - cron: '0 2,8,11,13 * * 0,6'       # weekend
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout scraper (private)
+        uses: actions/checkout@v4
+        with:
+          repository: aiprojectisl/dofnotify
+          token: ${{ secrets.PAT_READ }}
+          path: scraper
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: scraper/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --omit=dev --prefer-offline
+        working-directory: scraper
+
+      - name: Run scraper
+        working-directory: scraper
+        env:
+          SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
+          BOT_SECRET:    ${{ secrets.BOT_SECRET }}
+          CREDS_SECRET:  ${{ secrets.CREDS_SECRET }}
+        run: node test_fetch_all.js
