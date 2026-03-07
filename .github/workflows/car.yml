@@ -1,4 +1,4 @@
-name: DOF Scraper
+name: DOF Car
 
 on:
   schedule:
@@ -18,20 +18,20 @@ jobs:
         with:
           repository: aiprojectisl/dofnotify
           token: ${{ secrets.PAT_READ }}
-          path: scraper
+          path: car
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: scraper/package-lock.json
+          cache-dependency-path: car/package-lock.json
 
       - name: Install dependencies
         run: npm ci --omit=dev --prefer-offline
-        working-directory: scraper
+        working-directory: car
 
-      - name: Run scraper
-        working-directory: scraper
+      - name: Run car
+        working-directory: car
         env:
           SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
