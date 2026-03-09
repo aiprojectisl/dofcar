@@ -7,6 +7,19 @@ on:
     - cron: '0 22 * * 1-5'              # 05 WIB weekday
     - cron: '0 2,8,11,13 * * 0,6'       # weekend
   workflow_dispatch:
+    inputs:
+      uid:
+        description: 'User ID to sync (empty = all)'
+        required: false
+        default: ''
+      is_init:
+        description: 'Is this a first-time init sync?'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: dof-car
+  cancel-in-progress: false
 
 jobs:
   car:
@@ -36,8 +49,7 @@ jobs:
           SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
           BOT_SECRET:    ${{ secrets.BOT_SECRET }}
-          WEB_USERNAME:  ${{ secrets.WEB_USERNAME }}
-          WEB_PASSWORD:  ${{ secrets.WEB_PASSWORD }}
-          WEB_ENTITY:    ${{ secrets.WEB_ENTITY }}
           VERCEL_URL:    ${{ secrets.VERCEL_URL }}
+          TARGET_UID:    ${{ github.event.inputs.uid }}
+          IS_INIT:       ${{ github.event.inputs.is_init }}
         run: node test_fetch_all.js
