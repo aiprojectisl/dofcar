@@ -1,0 +1,44 @@
+name: DOF Vault
+
+on:
+  schedule:
+    - cron: '0 2,8,11,13 * * 1-5'   # 09,15,18,20 WIB weekday
+    - cron: '0 22 * * 1-5'           # 05 WIB weekday (next day)
+  workflow_dispatch:
+
+concurrency:
+  group: dof-vault
+  cancel-in-progress: false
+
+jobs:
+  vault:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout vault (private)
+        uses: actions/checkout@v4
+        with:
+          repository: aiprojectisl/dofvault
+          token: ${{ secrets.PAT_READ }}
+          path: vault
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: vault/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --omit=dev --prefer-offline
+        working-directory: vault
+
+      - name: Run vault
+        working-directory: vault
+        env:
+          SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
+          BOT_SECRET:    ${{ secrets.BOT_SECRET }}
+          VERCEL_URL:    ${{ secrets.VERCEL_URL }}
+          GAS_URL:       ${{ secrets.GAS_URL }}
+          GAS_TOKEN:     ${{ secrets.GAS_TOKEN }}
+        run: node main.js
