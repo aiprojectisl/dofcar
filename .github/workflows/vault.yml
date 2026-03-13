@@ -31,7 +31,7 @@ jobs:
           cache-dependency-path: vault/package-lock.json
 
       - name: Install dependencies
-        run: npm ci --omit=dev --prefer-offline
+        run: npm install --omit=dev
         working-directory: vault
 
       - name: Run vault
