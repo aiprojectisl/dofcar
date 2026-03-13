@@ -7,6 +7,14 @@ on:
         description: 'Single user_id to process (leave empty for all users)'
         required: false
         default: ''
+      is_init:
+        description: 'Inisiasi pertama kali untuk user baru (true/false)'
+        required: false
+        default: 'false'
+      max_detail:
+        description: 'Max surat detail to process per run (0 = unlimited)'
+        required: false
+        default: '50'
 
 concurrency:
   group: dof-vault
@@ -44,4 +52,6 @@ jobs:
           GAS_URL:       ${{ secrets.GAS_URL }}
           GAS_TOKEN:     ${{ secrets.GAS_TOKEN }}
           TARGET_UID:    ${{ github.event.inputs.target_uid }}
+          IS_INIT:       ${{ github.event.inputs.is_init }}
+          MAX_DETAIL:    ${{ github.event.inputs.max_detail }}
         run: node main.js
