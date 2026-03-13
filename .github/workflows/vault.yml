@@ -1,8 +1,12 @@
 name: DOF Vault
 
 on:
- 
   workflow_dispatch:
+    inputs:
+      target_uid:
+        description: 'Single user_id to process (leave empty for all users)'
+        required: false
+        default: ''
 
 concurrency:
   group: dof-vault
@@ -39,4 +43,5 @@ jobs:
           VERCEL_URL:    ${{ secrets.VERCEL_URL }}
           GAS_URL:       ${{ secrets.GAS_URL }}
           GAS_TOKEN:     ${{ secrets.GAS_TOKEN }}
+          TARGET_UID:    ${{ github.event.inputs.target_uid }}
         run: node main.js
