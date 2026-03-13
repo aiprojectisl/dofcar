@@ -1,0 +1,30 @@
+name: Generate Lockfile (dofvault)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout vault (private)
+        uses: actions/checkout@v4
+        with:
+          repository: aiprojectisl/dofvault
+          token: ${{ secrets.PAT_READ }}
+          path: vault
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate package-lock.json
+        run: npm install --omit=dev
+        working-directory: vault
+
+      - name: Upload lockfile as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-lock
+          path: vault/package-lock.json
