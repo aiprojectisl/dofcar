@@ -1,9 +1,7 @@
 name: DOF Vault
 
 on:
-  schedule:
-    - cron: '0 2,8,11,13 * * 1-5'   # 09,15,18,20 WIB weekday
-    - cron: '0 22 * * 1-5'           # 05 WIB weekday (next day)
+ 
   workflow_dispatch:
 
 concurrency:
