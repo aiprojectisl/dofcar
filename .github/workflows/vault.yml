@@ -47,6 +47,7 @@ jobs:
         env:
           SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
+          CREDS_SECRET:  ${{ secrets.CREDS_SECRET }}
           GAS_URL:       ${{ secrets.GAS_URL }}
           GAS_TOKEN:     ${{ secrets.GAS_TOKEN }}
           TARGET_UID:    ${{ github.event.inputs.target_uid }}
