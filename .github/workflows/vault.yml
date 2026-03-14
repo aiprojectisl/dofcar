@@ -35,6 +35,6 @@ jobs:
           SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
           CREDS_SECRET:  ${{ secrets.CREDS_SECRET }}
-          GAS_URL:       ${{ secrets.GAS_URL }}
-          GAS_TOKEN:     ${{ secrets.GAS_TOKEN }}
+          GAS_VAULT_URL:   ${{ secrets.GAS_VAULT_URL }}
+          GAS_VAULT_TOKEN: ${{ secrets.GAS_VAULT_TOKEN }}
         run: node main.js
