@@ -1,8 +1,6 @@
 name: DOF Vault
 
 on:
-  schedule:
-    - cron: '0 3,7,11 * * 1-5'    # 10, 14, 18 WIB weekday — TBD setelah stable
   workflow_dispatch:
     inputs:
       uid:
