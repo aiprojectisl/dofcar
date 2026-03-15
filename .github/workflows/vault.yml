@@ -1,7 +1,22 @@
 name: DOF Vault
 
 on:
+  schedule:
+    - cron: '0 3,7,11 * * 1-5'    # 10, 14, 18 WIB weekday — TBD setelah stable
   workflow_dispatch:
+    inputs:
+      uid:
+        description: 'User ID to sync (kosong = all)'
+        required: false
+        default: ''
+      stage:
+        description: 'Stage: all | discovery | enrich'
+        required: false
+        default: 'all'
+      debug_mode:
+        description: 'Debug mode — print raw HTML ke log (true/false)'
+        required: false
+        default: 'false'
 
 concurrency:
   group: dof-vault
@@ -12,11 +27,11 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout vault (private)
+      - name: Checkout dofvault (private)
         uses: actions/checkout@v4
         with:
           repository: aiprojectisl/dofvault
-          token: ${{ secrets.PAT_VAULT }}
+          token: ${{ secrets.PAT_READ }}
           path: vault
 
       - uses: actions/setup-node@v4
@@ -26,7 +41,7 @@ jobs:
           cache-dependency-path: vault/package-lock.json
 
       - name: Install dependencies
-        run: npm install --omit=dev
+        run: npm ci --omit=dev --prefer-offline
         working-directory: vault
 
       - name: Run vault
@@ -35,6 +50,7 @@ jobs:
           SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
           CREDS_SECRET:  ${{ secrets.CREDS_SECRET }}
-          GAS_VAULT_URL:   ${{ secrets.GAS_VAULT_URL }}
-          GAS_VAULT_TOKEN: ${{ secrets.GAS_VAULT_TOKEN }}
+          TARGET_UID:    ${{ github.event.inputs.uid }}
+          STAGE:         ${{ github.event.inputs.stage || 'all' }}
+          DEBUG_MODE:    ${{ github.event.inputs.debug_mode || 'false' }}
         run: node main.js
