@@ -8,7 +8,7 @@ on:
         required: false
         default: ''
       stage:
-        description: 'Stage: all | discovery | enrich'
+        description: 'Stage: all | discovery | scrape_detail'
         required: false
         default: ''
       debug_mode:
