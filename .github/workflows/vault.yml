@@ -10,7 +10,7 @@ on:
       stage:
         description: 'Stage: all | discovery | enrich'
         required: false
-        default: 'all'
+        default: ''
       debug_mode:
         description: 'Debug mode — print raw HTML ke log (true/false)'
         required: false
