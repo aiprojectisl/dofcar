@@ -8,7 +8,7 @@ on:
         required: true
         default: '106786888914632369739'
       stage:
-        description: 'Stage: all | discovery | scrape_detail | reconcile'
+        description: 'Stage: all | discovery | scrape_detail | reconcile | upload_gdrive'
         required: false
         default: ''
       debug_mode:
@@ -48,7 +48,12 @@ jobs:
           SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
           CREDS_SECRET:  ${{ secrets.CREDS_SECRET }}
+          GDRIVE_CLIENT_ID:       ${{ secrets.GDRIVE_CLIENT_ID }}
+          GDRIVE_CLIENT_SECRET:   ${{ secrets.GDRIVE_CLIENT_SECRET }}
+          GDRIVE_REFRESH_TOKEN:   ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+          GDRIVE_ROOT_FOLDER_ID:  ${{ secrets.GDRIVE_ROOT_FOLDER_ID }}
           TARGET_UID:    ${{ github.event.inputs.uid }}
           STAGE:         ${{ github.event.inputs.stage || 'all' }}
           DEBUG_MODE:    ${{ github.event.inputs.debug_mode || 'false' }}
+          
         run: node main.js
