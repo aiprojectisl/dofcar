@@ -7,7 +7,7 @@ on:
       uid:
         description: 'User ID to sync (kosong = all)'
         required: false
-        default: '106786888914632369739'
+        default: ''
       stage:
         description: 'Stage: all | discovery | scrape_detail | reconcile | upload_gdrive'
         required: false
