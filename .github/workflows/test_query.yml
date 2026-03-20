@@ -7,15 +7,15 @@ workflow_dispatch:
         description: 'Search query'
         required: false
         default: 'memo internal RDMP'
-      uid:
+        uid:
         description: 'User ID'
         required: false
         default: '106786888914632369739'
-      limit:
+        limit:
         description: 'Result limit'
         required: false
         default: '5'
-      mode:
+        mode:
         description: 'Search mode (vector | fulltext | hybrid)'
         required: false
         default: 'hybrid'
@@ -32,7 +32,7 @@ jobs:
           echo "⚙️  Mode   : ${{ inputs.mode }}"
           echo ""
 
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://dofvault.vercel.app/api/query \
+          RESPONSE=$(curl -s -w "\n%   {http_code}" -X POST   https://dofvault.vercel.app/api/query \
             -H "Content-Type: application/json" \
             -d "{
               \"query\": \"${{ inputs.query }}\",
