@@ -38,5 +38,6 @@ jobs:
           GDRIVE_CLIENT_ID:       ${{ secrets.GDRIVE_CLIENT_ID }}
           GDRIVE_CLIENT_SECRET:   ${{ secrets.GDRIVE_CLIENT_SECRET }}
           GDRIVE_REFRESH_TOKEN:   ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+          GDRIVE_ROOT_FOLDER_ID:  ${{ secrets.GDRIVE_ROOT_FOLDER_ID }}
           TARGET_UID:             ${{ github.event.inputs.uid }}
         run: node tools/audit_gdrive.js
