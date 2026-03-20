@@ -6,7 +6,7 @@ on:
     inputs:
       uid:
         description: 'User ID to sync (kosong = all)'
-        required: true
+        required: false
         default: '106786888914632369739'
       stage:
         description: 'Stage: all | discovery | scrape_detail | reconcile | upload_gdrive'
