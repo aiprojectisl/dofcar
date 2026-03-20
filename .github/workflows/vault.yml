@@ -5,7 +5,8 @@ on:
   workflow_dispatch:
     inputs:
       uid:
-        description: 'User ID to sync (kosong = all)'
+        description: 'User ID to sync (kosong = all) 
+                      106786888914632369739'
         required: false
         default: ''
       stage:
