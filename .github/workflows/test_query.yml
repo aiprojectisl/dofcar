@@ -1,3 +1,6 @@
+name: Test RAG Query
+
+on:
 workflow_dispatch:
     inputs:
       query:
