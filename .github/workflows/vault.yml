@@ -16,6 +16,10 @@ on:
         description: 'Debug mode — print raw HTML ke log (true/false)'
         required: false
         default: 'false'
+      embed_limit:
+        description: 'Limit embed items (kosong=all, integer=debug)'
+        required: false
+        default: ''
 
   # Cron — probe-gated, every 6 hours (WIB: 06:00, 12:00, 18:00, 00:00)
   # TARGET_UID empty = all users, STAGE=all = probe mode active
@@ -63,5 +67,6 @@ jobs:
           TARGET_UID:    ${{ github.event.inputs.uid || '' }}
           STAGE:         ${{ github.event.inputs.stage || 'all' }}
           DEBUG_MODE:    ${{ github.event.inputs.debug_mode || 'false' }}
+          EMBED_LIMIT:   ${{ github.event.inputs.embed_limit || '' }}
 
         run: node main.js
