@@ -1,6 +1,7 @@
 name: DOF Vault
 
 on:
+  # Manual trigger — bypasses probe (direct pipeline)
   workflow_dispatch:
     inputs:
       uid:
@@ -15,6 +16,11 @@ on:
         description: 'Debug mode — print raw HTML ke log (true/false)'
         required: false
         default: 'false'
+
+  # Cron — probe-gated, every 6 hours
+  # TARGET_UID empty = all users, STAGE=all = probe mode active
+  schedule:
+    - cron: '0 0,6,12,18 * * *'
 
 concurrency:
   group: dof-vault
@@ -45,15 +51,16 @@ jobs:
       - name: Run vault
         working-directory: vault
         env:
-          SUPABASE_URL:  ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY:  ${{ secrets.SUPABASE_KEY }}
-          CREDS_SECRET:  ${{ secrets.CREDS_SECRET }}
+          SUPABASE_URL:           ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:           ${{ secrets.SUPABASE_KEY }}
+          CREDS_SECRET:           ${{ secrets.CREDS_SECRET }}
           GDRIVE_CLIENT_ID:       ${{ secrets.GDRIVE_CLIENT_ID }}
           GDRIVE_CLIENT_SECRET:   ${{ secrets.GDRIVE_CLIENT_SECRET }}
           GDRIVE_REFRESH_TOKEN:   ${{ secrets.GDRIVE_REFRESH_TOKEN }}
           GDRIVE_ROOT_FOLDER_ID:  ${{ secrets.GDRIVE_ROOT_FOLDER_ID }}
-          TARGET_UID:    ${{ github.event.inputs.uid }}
+          RESEND_API_KEY:         ${{ secrets.RESEND_API_KEY }}
+          TARGET_UID:    ${{ github.event.inputs.uid || '' }}
           STAGE:         ${{ github.event.inputs.stage || 'all' }}
           DEBUG_MODE:    ${{ github.event.inputs.debug_mode || 'false' }}
-          
+
         run: node main.js
