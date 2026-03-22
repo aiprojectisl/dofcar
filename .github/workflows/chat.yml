@@ -1,0 +1,80 @@
+name: Test Chat API
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Chat message to send'
+        required: false
+        default: 'apa status proyek RDMP?'
+      uid:
+        description: 'User ID'
+        required: false
+        default: '106786888914632369739'
+      session_id:
+        description: 'Session ID (leave empty for new session)'
+        required: false
+        default: ''
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test chat endpoint
+        run: |
+          echo "💬 Message    : ${{ inputs.message }}"
+          echo "👤 UID        : ${{ inputs.uid }}"
+          echo "🔑 Session ID : ${{ inputs.session_id || 'new session' }}"
+          echo ""
+
+          # Build JSON body — include session_id only if provided
+          if [ -z "${{ inputs.session_id }}" ]; then
+            BODY=$(cat <<EOF
+          {
+            "message": "${{ inputs.message }}",
+            "uid": "${{ inputs.uid }}",
+            "session_id": null
+          }
+          EOF
+          )
+          else
+            BODY=$(cat <<EOF
+          {
+            "message": "${{ inputs.message }}",
+            "uid": "${{ inputs.uid }}",
+            "session_id": "${{ inputs.session_id }}"
+          }
+          EOF
+          )
+          fi
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://dofvault.vercel.app/api/chat \
+            -H "Content-Type: application/json" \
+            -d "$BODY")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY_RESP=$(echo "$RESPONSE" | head -n -1)
+
+          echo "📡 HTTP Status: $HTTP_CODE"
+          echo ""
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Success"
+            echo ""
+            echo "📋 Session ID:"
+            echo "$BODY_RESP" | jq -r '.session_id'
+            echo ""
+            echo "📊 Doc count  : $(echo "$BODY_RESP" | jq '.doc_count')"
+            echo "🔢 Tokens used: $(echo "$BODY_RESP" | jq '.tokens_used')"
+            echo ""
+            echo "📎 Sources (top 3):"
+            echo "$BODY_RESP" | jq '.sources[:3] | .[] | "  \(.score | . * 100 | round / 100) | \(.nomor_surat) | \(.judul[:60])"' -r
+            echo ""
+            echo "💬 Response:"
+            echo "─────────────────────────────────────────────────"
+            echo "$BODY_RESP" | jq -r '.response'
+            echo "─────────────────────────────────────────────────"
+          else
+            echo "❌ Failed"
+            echo "$BODY_RESP" | jq .
+          fi
