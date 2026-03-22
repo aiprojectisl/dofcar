@@ -6,7 +6,7 @@ on:
       message:
         description: 'Chat message to send'
         required: false
-        default: 'apa status proyek RDMP?'
+        default: 'Berapa surat edaran dari Pupuk Indonesia dan tentang apa saja?'
       uid:
         description: 'User ID'
         required: false
