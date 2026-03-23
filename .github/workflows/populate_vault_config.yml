@@ -34,6 +34,7 @@ jobs:
         env:
           SUPABASE_URL:          ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY:          ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_KEY:  ${{ secrets.SUPABASE_SERVICE_KEY }}
           CREDS_SECRET:          ${{ secrets.CREDS_SECRET }}
           GDRIVE_CLIENT_ID:      ${{ secrets.GDRIVE_CLIENT_ID }}
           GDRIVE_CLIENT_SECRET:  ${{ secrets.GDRIVE_CLIENT_SECRET }}
