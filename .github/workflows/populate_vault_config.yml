@@ -33,7 +33,7 @@ jobs:
         working-directory: vault
         env:
           SUPABASE_URL:          ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY:          ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SUPABASE_KEY:          ${{ secrets.SUPABASE_KEY }}
           CREDS_SECRET:          ${{ secrets.CREDS_SECRET }}
           GDRIVE_CLIENT_ID:      ${{ secrets.GDRIVE_CLIENT_ID }}
           GDRIVE_CLIENT_SECRET:  ${{ secrets.GDRIVE_CLIENT_SECRET }}
@@ -42,4 +42,5 @@ jobs:
           GEMINI_KEY_EMBED:      ${{ secrets.GEMINI_KEY_EMBED }}
           GEMINI_KEY_CHAT:       ${{ secrets.GEMINI_KEY_CHAT }}
           RESEND_API_KEY:        ${{ secrets.RESEND_API_KEY }}
+          PAT_VAULT:             ${{ secrets.PAT_VAULT }}
         run: node tools/populate_vault_config.js
