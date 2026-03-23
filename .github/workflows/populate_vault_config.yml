@@ -44,4 +44,5 @@ jobs:
           GEMINI_KEY_CHAT:       ${{ secrets.GEMINI_KEY_CHAT }}
           RESEND_API_KEY:        ${{ secrets.RESEND_API_KEY }}
           PAT_VAULT:             ${{ secrets.PAT_VAULT }}
+          
         run: node tools/populate_vault_config.js
