@@ -1,0 +1,39 @@
+name: Populate Vault Config
+
+on:
+  workflow_dispatch:
+
+jobs:
+  populate:
+    name: Encrypt & Store Credentials
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dofvault
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.DOFVAULT_REPO }}
+          token: ${{ secrets.PAT_VAULT }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run populate script
+        env:
+          SUPABASE_URL:          ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY:          ${{ secrets.SUPABASE_KEY }}
+          CREDS_SECRET:          ${{ secrets.CREDS_SECRET }}
+          GDRIVE_CLIENT_ID:      ${{ secrets.GDRIVE_CLIENT_ID }}
+          GDRIVE_CLIENT_SECRET:  ${{ secrets.GDRIVE_CLIENT_SECRET }}
+          GDRIVE_REFRESH_TOKEN:  ${{ secrets.GDRIVE_REFRESH_TOKEN }}
+          GDRIVE_ROOT_FOLDER_ID: ${{ secrets.GDRIVE_ROOT_FOLDER_ID }}
+          GEMINI_KEY_EMBED:      ${{ secrets.GEMINI_KEY_EMBED }}
+          GEMINI_KEY_CHAT:       ${{ secrets.GEMINI_KEY_CHAT }}
+          RESEND_API_KEY:        ${{ secrets.RESEND_API_KEY }}
+        run: node tools/populate_vault_config.js
