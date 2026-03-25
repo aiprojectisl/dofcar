@@ -9,7 +9,7 @@ on:
         required: true
         default: '106786888914632369739'
       stage:
-        description: 'Stage: all | discovery | scrape_detail | reconcile | upload_gdrive | embed'
+        description: 'Stage: all | discovery | scrape_detail | reconcile | upload_storage | embed'
         required: false
         default: ''
       debug_mode:
