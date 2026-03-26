@@ -37,7 +37,7 @@ jobs:
           CREDS_SECRET:           ${{ secrets.CREDS_SECRET }}
           SUPABASE_STORAGE_URL:   ${{ secrets.SUPABASE_STORAGE_URL }}
           SUPABASE_STORAGE_KEY:   ${{ secrets.SUPABASE_STORAGE_KEY }}
-          GEMINI_KEY_EMBED:       ${{ secrets.GEMINI_KEY_EMBED }}
+          MISTRAL_KEY_EMBED:       ${{ secrets.MISTRAL_KEY_EMBED }}
           GEMINI_KEY_CHAT:        ${{ secrets.GEMINI_KEY_CHAT }}
           RESEND_API_KEY:         ${{ secrets.RESEND_API_KEY }}
           PAT_VAULT:              ${{ secrets.PAT_VAULT }}
