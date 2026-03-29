@@ -30,11 +30,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: vault
+        working-directory: vault/engine
 
       - name: Run rename_storage
         run: node tools/rename_storage.js
-        working-directory: vault
+        working-directory: vault/engine
         env:
           SUPABASE_URL:          ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY:  ${{ secrets.SUPABASE_SERVICE_KEY }}

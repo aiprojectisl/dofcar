@@ -21,10 +21,10 @@ jobs:
 
       - name: Generate package-lock.json
         run: npm install --omit=dev
-        working-directory: vault
+        working-directory: vault/engine
 
       - name: Upload lockfile as artifact
         uses: actions/upload-artifact@v4
         with:
           name: package-lock
-          path: vault/package-lock.json
+          path: vault/engine/package-lock.json
