@@ -16,15 +16,11 @@ jobs:
   hapus_duplikat:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout dofcar (public)
-        uses: actions/checkout@v4
-
       - name: Checkout dofvault (private)
         uses: actions/checkout@v4
         with:
           repository: ${{ secrets.DOFVAULT_REPO }}
           token: ${{ secrets.PAT_VAULT }}
-          path: dofvault
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,11 +28,11 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        working-directory: dofvault/engine
-        run: npm install --prefer-offline
+        working-directory: engine
+        run: npm install
 
       - name: Run hapus_duplikat
-        working-directory: dofvault/engine
+        working-directory: engine
         env:
           DRY_RUN:              ${{ github.event.inputs.dry_run }}
           SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
