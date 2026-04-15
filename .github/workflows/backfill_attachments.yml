@@ -1,24 +1,37 @@
 name: Backfill Attachments
+
 on:
   workflow_dispatch:
     inputs:
       uid:
         description: 'User ID'
         required: true
+        type: string
+
 jobs:
   backfill:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout dofvault
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/dofvault
+          token: ${{ secrets.PAT_VAULT }}
+          path: vault
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm ci
-        working-directory: engine
-      - name: Run backfill
-        working-directory: engine
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: vault/engine
+
+      - name: Run backfill attachments
+        run: node tools/backfill_attachments.js ${{ inputs.uid }}
+        working-directory: vault/engine
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          CREDS_SECRET: ${{ secrets.CREDS_SECRET }}
-        run: node tools/backfill_attachments.js ${{ github.event.inputs.uid }}
+          SUPABASE_URL:          ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY:  ${{ secrets.SUPABASE_SERVICE_KEY }}
+          CREDS_SECRET:          ${{ secrets.CREDS_SECRET }}
