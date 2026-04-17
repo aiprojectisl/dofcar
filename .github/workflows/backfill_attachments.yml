@@ -7,6 +7,11 @@ on:
         description: 'User ID'
         required: true
         type: string
+      batch_size:
+        description: 'Batch size (URLs per batch)'
+        required: false
+        default: '50'
+        type: string
 
 jobs:
   backfill:
@@ -29,7 +34,7 @@ jobs:
         working-directory: vault/engine
 
       - name: Run backfill attachments
-        run: node tools/backfill_attachments.js ${{ inputs.uid }}
+        run: node tools/backfill_attachments.js ${{ inputs.uid }} ${{ inputs.batch_size }}
         working-directory: vault/engine
         env:
           SUPABASE_URL:          ${{ secrets.SUPABASE_URL }}
