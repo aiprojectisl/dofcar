@@ -10,7 +10,7 @@ on:
       batch_size:
         description: 'Batch size (URLs per batch)'
         required: false
-        default: '50'
+        default: ''
         type: string
 
 jobs:
