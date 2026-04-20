@@ -1,5 +1,4 @@
 name: DOF Vault
-
 on:
   # Manual trigger — bypasses probe (direct pipeline)
   workflow_dispatch:
@@ -9,7 +8,7 @@ on:
         required: true
         default: '106786888914632369739'
       stage:
-        description: 'Stage: all | discovery | scrape_detail | reconcile | upload_storage | embed'
+        description: 'Stage: all | discovery | scrape_detail | reconcile | upload_storage | attachment_extract | embed'
         required: false
         default: ''
       debug_mode:
@@ -20,20 +19,16 @@ on:
         description: 'Limit embed items (kosong=all, integer=debug)'
         required: false
         default: ''
-
   # Cron — probe-gated, every 6 hours (WIB: 06:00, 12:00, 18:00, 00:00)
   # TARGET_UID empty = all users, STAGE=all = probe mode active
 #  schedule:
 #    - cron: '0 23,5,11,17 * * *'
-
 concurrency:
   group: dof-vault
   cancel-in-progress: false
-
 jobs:
   vault:
     runs-on: ubuntu-22.04
-
     steps:
       - name: Checkout dofvault (private)
         uses: actions/checkout@v4
@@ -41,17 +36,14 @@ jobs:
           repository: aiprojectisl/dofvault
           token: ${{ secrets.PAT_VAULT }}
           path: vault
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: vault/engine/package-lock.json
-
       - name: Install dependencies
         run: npm ci --omit=dev --prefer-offline
         working-directory: vault/engine
-
       - name: Run vault
         working-directory: vault/engine
         env:
@@ -61,5 +53,4 @@ jobs:
           STAGE:                ${{ github.event.inputs.stage || 'all' }}
           DEBUG_MODE:           ${{ github.event.inputs.debug_mode || 'false' }}
           EMBED_LIMIT:          ${{ github.event.inputs.embed_limit || '' }}
-
         run: node main.js
