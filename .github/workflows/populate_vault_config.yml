@@ -37,12 +37,14 @@ jobs:
           CREDS_SECRET:           ${{ secrets.CREDS_SECRET }}
           SUPABASE_STORAGE_URL:   ${{ secrets.SUPABASE_STORAGE_URL }}
           SUPABASE_STORAGE_KEY:   ${{ secrets.SUPABASE_STORAGE_KEY }}
-          MISTRAL_KEY_EMBED:       ${{ secrets.MISTRAL_KEY_EMBED }}
+          MISTRAL_KEY_EMBED:      ${{ secrets.MISTRAL_KEY_EMBED }}
           GEMINI_KEY_CHAT:        ${{ secrets.GEMINI_KEY_CHAT }}
           RESEND_API_KEY:         ${{ secrets.RESEND_API_KEY }}
           PAT_VAULT:              ${{ secrets.PAT_VAULT }}
           SUPABASE_KEY:           ${{ secrets.SUPABASE_KEY }}
           NEXTAUTH_SECRET:        ${{ secrets.NEXTAUTH_SECRET }}
           NEXTAUTH_URL:           ${{ secrets.NEXTAUTH_URL }}
+          EMBED_PROVIDER:         ${{ secrets.EMBED_PROVIDER }}
+          JINA_API_KEY:           ${{ secrets.JINA_API_KEY }}
 
         run: node tools/populate_vault_config.js
