@@ -2,6 +2,18 @@ name: Migrate Embeddings
 
 on:
   workflow_dispatch:
+    inputs:
+      batch_limit:
+        description: 'Jumlah surat yang diproses (5 / 10 / 0 = all)'
+        required: false
+        default: '10'
+        type: choice
+        options:
+          - '5'
+          - '10'
+          - '25'
+          - '50'
+          - '0'
 
 jobs:
   migrate:
@@ -29,4 +41,5 @@ jobs:
         env:
           SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          MISTRAL_KEY_EMBED:    ${{ secrets.MISTRAL_KEY_EMBED }}
+          CREDS_SECRET:         ${{ secrets.CREDS_SECRET }}
+          BATCH_LIMIT:          ${{ github.event.inputs.batch_limit }}
