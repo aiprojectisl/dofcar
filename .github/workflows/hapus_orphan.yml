@@ -35,6 +35,8 @@ jobs:
         working-directory: vault/engine
         env:
           DRY_RUN:              ${{ inputs.dry_run }}
+          SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           CREDS_SECRET:         ${{ secrets.CREDS_SECRET }}
           OUTPUT_FILE:          output/hapus_orphan_result.json
 
