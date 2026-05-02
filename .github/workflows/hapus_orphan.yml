@@ -1,0 +1,47 @@
+name: DOFVault_Hapus_Orphan
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'DRY_RUN mode (true = preview only, false = actual delete)'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+jobs:
+  hapus_orphan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dofvault
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/dofvault
+          token: ${{ secrets.PAT_VAULT }}
+          path: vault
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: vault/engine
+
+      - name: Run hapus_orphan
+        run: node tools/cleanup_orphan.js
+        working-directory: vault/engine
+        env:
+          DRY_RUN:              ${{ inputs.dry_run }}
+          CREDS_SECRET:         ${{ secrets.CREDS_SECRET }}
+          OUTPUT_FILE:          output/hapus_orphan_result.json
+
+      - name: Upload result artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hapus-orphan-${{ github.run_number }}-${{ inputs.dry_run }}
+          path: vault/engine/output/hapus_orphan_result.json
+          retention-days: 1
