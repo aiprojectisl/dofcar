@@ -1,0 +1,62 @@
+# .github/workflows/gdrive-encrypt-upload.yml
+# Repo: dofcar (public)
+# Triggers gdrive_encrypt_upload.js via PAT on dofvault private repo
+#
+# Secrets required in dofcar:
+#   DOFVAULT_PAT           — Personal Access Token with repo scope on dofvault
+#   DOFVAULT_REPO          — owner/repo string e.g. "yourorg/dofvault"
+#
+# Secrets required in dofvault (used by the actual job):
+#   SUPABASE_URL
+#   SUPABASE_SERVICE_KEY
+#   CREDS_SECRET
+#   GOOGLE_CLIENT_ID
+#   GOOGLE_CLIENT_SECRET
+#   GOOGLE_REFRESH_TOKEN
+
+name: GDrive Encrypt Upload
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        description: 'Files per run (default: 50)'
+        required: false
+        default: '50'
+      throttle_ms:
+        description: 'Delay between uploads in ms (default: 2000)'
+        required: false
+        default: '2000'
+      user_id_filter:
+        description: 'Restrict to specific user_id (optional)'
+        required: false
+        default: ''
+  schedule:
+    # Run daily at 02:00 UTC — adjust as needed
+    - cron: '0 2 * * *'
+
+jobs:
+  trigger-dofvault:
+    name: Trigger dofvault GDrive Upload
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Trigger workflow on dofvault
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.DOFVAULT_PAT }}
+          script: |
+            const [owner, repo] = '${{ secrets.DOFVAULT_REPO }}'.split('/');
+            await github.rest.actions.createWorkflowDispatch({
+              owner,
+              repo,
+              workflow_id: 'gdrive-upload-worker.yml',
+              ref: 'main',
+              inputs: {
+                batch_size:     '${{ github.event.inputs.batch_size || '50' }}',
+                throttle_ms:    '${{ github.event.inputs.throttle_ms || '2000' }}',
+                user_id_filter: '${{ github.event.inputs.user_id_filter || '' }}',
+              }
+            });
+            console.log('✓ Triggered gdrive-upload-worker.yml on dofvault');
