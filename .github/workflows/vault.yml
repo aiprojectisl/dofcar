@@ -49,6 +49,8 @@ jobs:
         env:
           SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          CREDS_SECRET:         ${{ secrets.CREDS_SECRET }}
+          PIPELINE_STORAGE:     ${{ secrets.PIPELINE_STORAGE || 'gdrive' }}
           TARGET_UID:           ${{ github.event.inputs.uid || '' }}
           STAGE:                ${{ github.event.inputs.stage || 'all' }}
           DEBUG_MODE:           ${{ github.event.inputs.debug_mode || 'false' }}
