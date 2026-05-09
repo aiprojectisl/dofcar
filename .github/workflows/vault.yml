@@ -8,7 +8,7 @@ on:
         required: true
         default: '106786888914632369739'
       stage:
-        description: 'Stage: all | discovery | scrape_detail | reconcile | upload_storage | attachment_extract | embed'
+        description: 'Stage: all | discovery | scrape_detail | reconcile | upload_storage | letter_summarizer | attachment_extract | embed'
         required: false
         default: ''
       debug_mode:
@@ -50,7 +50,6 @@ jobs:
           SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           CREDS_SECRET:         ${{ secrets.CREDS_SECRET }}
-          PIPELINE_STORAGE:     ${{ secrets.PIPELINE_STORAGE || 'gdrive' }}
           TARGET_UID:           ${{ github.event.inputs.uid || '' }}
           STAGE:                ${{ github.event.inputs.stage || 'all' }}
           DEBUG_MODE:           ${{ github.event.inputs.debug_mode || 'false' }}
